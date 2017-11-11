@@ -1,0 +1,45 @@
+doctype html
+html(xmlns='http://www.w3.org/1999/xhtml')
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    title Cluster administration
+    // BOOTSTRAP STYLES
+    link(href='/stylesheets/css/bootstrap.css', rel='stylesheet')
+    // FONTAWESOME STYLES
+    link(href='/stylesheets/css/font-awesome.css', rel='stylesheet')
+    // CUSTOM STYLES
+    link(href='/stylesheets/css/custom.css', rel='stylesheet')
+    link(href='/stylesheets/css/upload.css', rel='stylesheet')
+    link(href='/stylesheets/css/download.css', rel='stylesheet')
+    // GOOGLE FONTS
+    link(href='http://fonts.googleapis.com/css?family=Open+Sans', rel='stylesheet', type='text/css')
+
+
+    // /. WRAPPER
+    // JQUERY SCRIPTS
+    script(src='/javascripts/jquery-1.10.2.js')
+    // BOOTSTRAP SCRIPTS
+    script(src='/javascripts/bootstrap.min.js')
+    // CUSTOM SCRIPTS
+    script(src='/javascripts/custom.js')
+
+    // AngularJS Material Dependencies
+    link(rel='stylesheet', href='https://ajax.googleapis.com/ajax/libs/angular_material/1.1.4/angular-material.min.css')
+
+
+    //script(src='libs/angular/angular.min.js')
+    //script(src='libs/angular-material/angular-material.min.js')
+    //script(src='libs/angular-route/angular-route.min.js')
+    //script(src='libs/angular-animate/angular-animate.min.js')
+    //link(href='/stylesheets/css/whiteframe.css', rel='stylesheet')
+
+
+
+
+
+  body
+    #wrapper
+      include navbar
+      block content
+

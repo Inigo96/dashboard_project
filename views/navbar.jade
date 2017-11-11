@@ -1,0 +1,24 @@
+.navbar.navbar-inverse.navbar-fixed-top
+    .adjust-nav
+        .navbar-header
+            button.navbar-toggle(type='button', data-toggle='collapse', data-target='.sidebar-collapse')
+                span.icon-bar
+                span.icon-bar
+                span.icon-bar
+            a.navbar-brand(href='#')
+                img(src='/images/project.jpg')
+        //span.logout-spn
+                //a(href='#', style='color:#fff;') LOGOUT
+// /. NAV TOP
+nav.navbar-default.navbar-side(role='navigation')
+    .sidebar-collapse
+        ul#main-menu.nav
+            li
+                a(href='/')
+                    i.fa.fa-desktop
+                    | Dashboard
+            li
+                a(href='/predict_csv')
+                    i.fa.fa-table
+                    | Predict CSV
+

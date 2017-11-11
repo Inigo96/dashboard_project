@@ -1,0 +1,90 @@
+extends layout
+block content
+        #page-wrapper
+          #page-inner
+            h1 Dashboard: "#{server}"
+            script(src='https://code.highcharts.com/stock/highstock.js')
+            script(src='https://code.highcharts.com/stock/modules/exporting.js')
+            #container(style='height: 400px; min-width: 310px')
+
+            script.
+              //var series = JSON.parse( !{JSON.stringify(data)}
+              Highcharts.setOptions({
+              global: {
+              useUTC: false
+              }
+              });
+              // Create the chart
+              Highcharts.stockChart('container', {
+              chart: {
+              events: {
+              load: function () {
+              var series = this.series[0];
+              }
+              }
+              },
+              rangeSelector: {
+              buttons: [{
+              count: 1,
+              type: 'minute',
+              text: '1M'
+              }, {
+              count: 5,
+              type: 'minute',
+              text: '5M'
+              }, {
+              type: 'all',
+              text: 'All'
+              }],
+              inputEnabled: false,
+              selected: 0
+              },
+              title: {
+              text: 'Live % CPU usage data'
+              },
+              exporting: {
+              enabled: false
+              },
+              series: [{
+              name: 'CPU usage',
+              data: (function () {
+              /*
+              //var name = document.getElementById("helper").getAttribute("data-elastic");
+              // generate an array of random data
+              var data = [],
+              time = (new Date()).getTime(),
+              i;
+
+              for (i = -999; i <= 0; i += 1) {
+              data.push([
+              time + i * 1000,
+              Math.round(Math.random() * 100)
+              ]);
+              }
+              */
+              var i;
+              var time = (new Date()).getTime();
+              var lpl = JSON.parse( !{JSON.stringify(arr)});
+              var lista_plot_float = [];
+
+              /*for (i = lpl.length;i <= 0; i += 1){
+                lista_plot_float.push([parseInt(lpl[i][0]),parseFloat(lpl[i][1]).toFixed(2)]);
+              }*/
+
+              lpl.forEach(function(element) {
+                  lista_plot_float.push([parseInt(element[0]),parseFloat(parseFloat(element[1]).toFixed(2))]);
+              });
+
+              //alert(typeof lista_plot_float[1][1]);
+              return lista_plot_float;
+              }())
+              }]
+              });
+
+
+            //script(id='helper' src='/javascripts/highcharts_time_series.js')
+
+
+
+
+

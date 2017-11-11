@@ -1,0 +1,26 @@
+extends layout
+block content
+        #page-wrapper
+          #page-inner
+
+            h1 Dashboard
+            //p JSON.parse( !{JSON.stringify(list)} )
+
+            script(type='text/javascript').
+                var ul_ = (document.createElement('ul'));
+
+                var arr=JSON.parse( !{JSON.stringify(list)} );
+                var arrayLength = arr.length;
+
+                for (var i = 0; i < arrayLength; i++) {
+                    var li_ = (document.createElement('li'));
+                    var a_ = (document.createElement('a'));
+                    a_.href="/dasboard_highcharts/"+arr[i];
+                    a_.text=arr[i];
+                    li_.appendChild(a_);
+                    ul_.appendChild(li_);
+                }
+                document.getElementById('page-inner').appendChild(ul_);
+
+
+

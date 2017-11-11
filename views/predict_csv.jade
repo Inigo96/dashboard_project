@@ -1,0 +1,32 @@
+extends layout
+
+block content
+    #page-wrapper
+        #page-inner
+            script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular.min.js')
+            script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular-animate.min.js')
+            script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.11/angular-aria.min.js')
+            // AngularJS Material Javascript now available via Google CDN; version 1.1.4 used here
+            script(src='https://ajax.googleapis.com/ajax/libs/angular_material/1.1.4/angular-material.min.js')
+            script(src='javascripts/whiteframe.js')
+            h1.page-header Predict from CSV
+            .whiteframedemoBasicClassUsage(layout='row', layout-padding='', layout-wrap='', layout-fill='', style='padding-bottom: 32px;', ng-cloak='', ng-app='whiteframeBasicUsage')
+                              md-whiteframe.md-whiteframe-1dp(flex-sm='45', flex-gt-sm='35', flex-gt-md='25', layout='', layout-align='center center')
+                                "To download the predicted file, first upload csv to predict"
+            .upload_
+                span.glyphicon.glyphicon-cloud-upload
+                h2 File Uploader
+                .progress
+                    .progress-bar(role='progressbar')
+
+                button.btn.btn-lg.upload-btn(type='button') Upload File
+                .divider
+                button#download_button_ok.btn.btn-lg.download-btn(action="/download", type='button', disabled='') Download File
+                input#upload-input(type='file', name='uploads[]').hide()
+                script(src="/javascripts/upload.js")
+
+
+
+
+
+<!https://coligo.io/building-ajax-file-uploader-with-node/>

@@ -1,0 +1,24 @@
+.download-btn {
+  color: #ffffff;
+  background-color: #F89406;
+  border: none;
+}
+
+.download-btn:hover,
+.download-btn:focus,
+.download-btn:active,
+.download-btn.active {
+  color: #ffffff;
+  background-color: #FA8900;
+  border: none;
+}
+.glyphicon {
+  font-size: 5em;
+  color: #9CA3A9;
+}
+
+
+div.download_ {
+  text-align: center;
+  font-family: 'Raleway', sans-serif;
+}
