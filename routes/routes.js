@@ -11,14 +11,12 @@ module.exports = app => {
        },function (error, response,status) {
            var arr = [];
            if (error){
-             console.log("search error: "+error).
-             wsxwsxwsx2
-
+             console.log("search error: "+error)
            }
            else {
-             console.log("--- Response ---");
-             console.log(response);
-             console.log("--- Hits ---");
+//             console.log("--- Response ---");
+//             console.log(response);
+//             console.log("--- Hits ---");
              response.hits.hits.forEach(function(hit){
                arr.push(hit['_type'])
              })
@@ -73,9 +71,9 @@ module.exports = app => {
 //                     console.log(response);
 //                     console.log("--- Hits ---");
                      response.hits.hits.forEach(function(hit){
-                       if (hit['_source']['MEM_free'] != null){
+                       if (hit['_source']['MEM_usage'] != null){
 //                           console.log([hit['_id'], hit['_source']['CPU_sum']]);
-                           arr.push([hit['_source']['date'], hit['_source']['CPU_sum']]);
+                           arr.push([hit['_source']['date'], hit['_source']['MEM_usage']]);
 //                           arr2.push(hit['_source']['CPU_sum']);
 //                           arr1.push(hit['_source']['date']);
                        }
