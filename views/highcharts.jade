@@ -6,9 +6,7 @@ block content
             script(src='https://code.highcharts.com/stock/highstock.js')
             script(src='https://code.highcharts.com/stock/modules/exporting.js')
             #container(style='height: 400px; min-width: 310px')
-
-            script.
-              //var series = JSON.parse( !{JSON.stringify(data)}
+            script(type='text/javascript').
               Highcharts.setOptions({
               global: {
               useUTC: false
@@ -19,7 +17,20 @@ block content
               chart: {
               events: {
               load: function () {
+              // set up the updating of the chart each second
               var series = this.series[0];
+              /*setInterval(function () {
+              var x = (new Date()).getTime(), // current time
+              y = Math.round(Math.random() * 100);
+              series.addPoint([x, y], true, true);
+              }, 2000);*/
+              var socket = io();
+                            socket.on("!{server}", function(msg){
+                                              var lpl = JSON.parse(msg);
+                                              //alert([parseInt(lpl[0]),parseFloat(lpl[1]).toFixed(2)]);
+                                              //alert(parseFloat(lpl[1]).toFixed(2))
+                                              series.addPoint([parseInt(lpl[0]),parseFloat(parseFloat(lpl[1]).toFixed(2))], true, true);
+                            });
               }
               }
               },
@@ -40,7 +51,7 @@ block content
               selected: 0
               },
               title: {
-              text: 'Live % RAM data usage'
+              text: 'Live random data'
               },
               exporting: {
               enabled: false
@@ -48,39 +59,15 @@ block content
               series: [{
               name: 'CPU usage',
               data: (function () {
-              /*
-              //var name = document.getElementById("helper").getAttribute("data-elastic");
-              // generate an array of random data
-              var data = [],
-              time = (new Date()).getTime(),
-              i;
-
-              for (i = -999; i <= 0; i += 1) {
-              data.push([
-              time + i * 1000,
-              Math.round(Math.random() * 100)
-              ]);
-              }
-              */
-              var i;
-              var time = (new Date()).getTime();
               var lpl = JSON.parse( !{JSON.stringify(arr)});
               var lista_plot_float = [];
-
-              /*for (i = lpl.length;i <= 0; i += 1){
-                lista_plot_float.push([parseInt(lpl[i][0]),parseFloat(lpl[i][1]).toFixed(2)]);
-              }*/
-
               lpl.forEach(function(element) {
-                  lista_plot_float.push([parseInt(element[0]),parseFloat(parseFloat(element[1]).toFixed(2))]);
+              lista_plot_float.push([parseInt(element[0]),parseFloat(parseFloat(element[1]).toFixed(2))]);
               });
-
-              //alert(typeof lista_plot_float[1][1]);
               return lista_plot_float;
               }())
               }]
               });
-
 
             //script(id='helper' src='/javascripts/highcharts_time_series.js')
 

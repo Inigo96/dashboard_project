@@ -8,3 +8,129 @@ app.set('port', process.env.PORT || 3000);
 var server = app.listen(app.get('port'), function() {
   debug('Express server listening on port ' + server.address().port);
 });
+
+//var io = require('socket.io').listen(server);
+//require('../sockets/base');
+
+var io = require('socket.io')(server);
+var client = app.get('elastic');
+
+var first_time = true;
+
+io.on('connection', function(socket){
+    if(first_time == true) {
+    //console.log("ENTREEEEEEE");
+    var unique;
+          client.search({
+                   index: 'logs'
+                 },function (error, response,status) {
+                     var arr = [];
+                     if (error){
+                       console.log("search error: "+error)
+                     }
+                     else {
+          //             console.log("--- Response ---");
+          //             console.log(response);
+          //             console.log("--- Hits ---");
+                       response.hits.hits.forEach(function(hit){
+                         arr.push(hit['_type'])
+                       })
+                       let unique_ = [...new Set(arr)];
+                       unique=unique_;
+                     }
+          });
+    var last;
+    setInterval(function() {
+
+      if (typeof unique != 'undefined'){
+      if (typeof last == 'undefined'){
+       last = Array.apply(null, Array(unique.length)).map(Number.prototype.valueOf,0)
+       //console.log("RELLENADO CONCRETADO")
+      }
+      //console.log(JSON.stringify(unique));
+          for (var i = 0; i < unique.length; i++) {
+              time = ((new Date()).getTime() - 5000) //86400000)
+              var variable = unique[i]
+
+                             client.search(
+                             {
+                               from : 0, size : 10000,
+                               index: 'logs',
+                               type: variable,
+                               body:{
+                                   query: {
+                                           range : {
+                                               'date' : {
+                                                   gte : time,
+                                                   lt : 1599540884590
+                                               }
+                                           }
+                                   }
+              //                     ,
+              //                     sort: [{ 'date':   { order: 'desc' }}]
+                               }
+              //                 sort : {
+              //                    post_date : {
+              //                    order : asc
+              //                    }
+              //                 }
+                             },function (error, response,status) {
+                                 var arr = [];
+              //                   var arr1 = [];
+              //                   var arr2= [];
+                                 var previous
+                                 if (error){
+                                   console.log("search error: "+error)
+                                 }
+                                 else {
+              //                     console.log("--- Response ---");
+              //                     console.log(response);
+              //                     console.log("--- Hits ---");
+                                   response.hits.hits.forEach(function(hit){
+                                     if (hit['_source']['MEM_usage'] != null){
+              //                           console.log([hit['_id'], hit['_source']['CPU_sum']]);
+                                         arr.push([hit['_source']['date'], hit['_source']['MEM_usage']]);
+              //                           arr2.push(hit['_source']['CPU_sum']);
+              //                           arr1.push(hit['_source']['date']);
+                                     }
+                                   })
+                                 arr.sort(sortFunction);
+
+                                 function sortFunction(a, b) {
+                                     if (a[0] === b[0]) {
+                                         return 0;
+                                     }
+                                     else {
+                                         return (a[0] < b[0]) ? -1 : 1;
+                                     }
+                                 }
+
+              //                   arr.forEach(function(element) {
+              //                       console.log(element);
+              //                   });
+                                try{
+                                 if(last[i] != arr[0][0]){
+                                   //console.log(JSON.stringify(arr[0]));
+                                   //console.log(variable);
+                                   io.emit(variable,JSON.stringify(arr[0]));
+                                   last[i] = arr[0][0];
+                                 }
+                                 }catch(e){
+
+                                 }
+
+                                 }
+                             });
+
+          }
+      }
+
+      //console.log('message:');
+    }, 1000);
+    first_time = false
+    }
+//  socket.on('chat message', function(msg){
+//    io.emit('chat message', msg);
+//    io.to(socket.id).emit('hey')
+//  });
+});

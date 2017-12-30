@@ -3,9 +3,15 @@ extends layout
 block content
         #page-wrapper
           #page-inner
-            .row
-              .col-md-12
-                h2 BLANK PAGE
+            .container
+                  .jumbotron.text-center
+                    h1
+                      span.fa.fa-lock
+                      |  Node Authentication
+                    p Login or Register with:
+                    a.btn.btn-danger(href='/auth/google')
+                      span.fa.fa-google-plus
+                      |  Google+
             // /. ROW
             hr
             // /. ROW

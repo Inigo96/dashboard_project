@@ -1,29 +1,60 @@
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var session = require('express-session');
-var flash = require('connect-flash');
 var uuid = require('uuid/v4');
 var fs = require('fs');
 var formidable = require('formidable');
-var passport = require('passport');
 var elasticsearch=require('elasticsearch');
+
+
 //var jsdom = requite('jsdom')
 //var Highcharts = require('highcharts');
 //
+/////////////////////////////////////////////
+var mongoose = require('mongoose');
+var passport = require('passport');
+var flash    = require('connect-flash');
+
+var morgan       = require('morgan');
+var cookieParser = require('cookie-parser');
+var bodyParser   = require('body-parser');
+var session      = require('express-session');
+//////////////////////////////////////////////
 var app = express();
 
 var client = new elasticsearch.Client( {
   hosts: [
-//    'http://localhost:9200/'
-      'https://y97deept:iwl1amugtrredgoq@ivy-3627020.us-east-1.bonsaisearch.net'
+    'http://localhost:9200/'
+//      'https://y97deept:iwl1amugtrredgoq@ivy-3627020.us-east-1.bonsaisearch.net'
   ]
 });
 
 app.set('elastic',client)
+
+///////////////////////////////////////////////////
+var configDB = require('./config/database.js');
+
+// configuration ===============================================================
+mongoose.connect(configDB.url); // connect to our database
+
+require('./config/passport')(passport); // pass passport for configuration
+
+// set up our express application
+app.use(morgan('dev')); // log every request to the console
+app.use(cookieParser()); // read cookies (needed for auth)
+app.use(bodyParser.json()); // get information from html forms
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// required for passport
+app.use(session({
+    secret: 'ilovescotchscotchyscotchscotch', // session secret
+    resave: true,
+    saveUninitialized: true
+}));
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+app.use(flash()); // use connect-flash for flash messages stored in session
+////////////////////////////////////////////////////
 
 // view engine setup
 app.set('views', `${__dirname}/views`);
@@ -34,11 +65,7 @@ app.use(favicon(`${__dirname}/public/images/favicon.png`));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.static(`${__dirname}/views`)); 		// statics
-require(`./routes/routes.js`)(app);						// routes
-
-//var server = require('http').createServer(app);
-//var io = require('socket.io')(server);
-
+require(`./routes/routes.js`)(app, passport);						// routes
 
 module.exports = app;
 
