@@ -21,7 +21,7 @@ module.exports = {
     'googleAuth' : {
         'clientID'         : '930540559855-9bl139dr79chhbh1i5qce3qnfgj2miq3.apps.googleusercontent.com',
         'clientSecret'     : 'YZmHUktjcQOZXPHpmoMrQP30',
-        'callbackURL'      : 'http://127.0.0.1:3000/auth/google/callback'
+        'callbackURL'      : 'https://rocky-peak-85212.herokuapp.com/auth/google/callback'
     }
 
 };
