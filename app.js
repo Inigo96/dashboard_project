@@ -24,8 +24,8 @@ var app = express();
 
 var client = new elasticsearch.Client( {
   hosts: [
-    'http://localhost:9200/'
-//      'https://y97deept:iwl1amugtrredgoq@ivy-3627020.us-east-1.bonsaisearch.net'
+//    'http://localhost:9200/'
+      'https://y97deept:iwl1amugtrredgoq@ivy-3627020.us-east-1.bonsaisearch.net'
   ]
 });
 
